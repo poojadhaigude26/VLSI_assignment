@@ -16,7 +16,7 @@
 -- PROGRAM "Quartus II 64-Bit"
 -- VERSION "Version 13.1.0 Build 162 10/23/2013 SJ Web Edition"
 
--- DATE "03/29/2026 20:52:00"
+-- DATE "03/29/2026 23:12:27"
 
 -- 
 -- Device: Altera EPM240T100C3 Package TQFP100
@@ -31,40 +31,27 @@ LIBRARY MAXII;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE MAXII.MAXII_COMPONENTS.ALL;
 
-ENTITY 	csa_4bit IS
+ENTITY 	decoder_24 IS
     PORT (
-	A : IN std_logic_vector(3 DOWNTO 0);
-	B : IN std_logic_vector(3 DOWNTO 0);
-	C : IN std_logic_vector(3 DOWNTO 0);
-	Sum : OUT std_logic_vector(3 DOWNTO 0);
-	Carry : OUT std_logic_vector(3 DOWNTO 0)
+	A : IN std_logic;
+	B : IN std_logic;
+	Y0 : OUT std_logic;
+	Y1 : OUT std_logic;
+	Y2 : OUT std_logic;
+	Y3 : OUT std_logic
 	);
-END csa_4bit;
+END decoder_24;
 
 -- Design Ports Information
--- Sum[0]	=>  Location: PIN_6,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- Sum[1]	=>  Location: PIN_88,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- Sum[2]	=>  Location: PIN_97,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- Sum[3]	=>  Location: PIN_48,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- Carry[0]	=>  Location: PIN_85,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- Carry[1]	=>  Location: PIN_7,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- Carry[2]	=>  Location: PIN_2,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- Carry[3]	=>  Location: PIN_27,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
--- A[0]	=>  Location: PIN_28,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- B[0]	=>  Location: PIN_16,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- C[0]	=>  Location: PIN_34,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- A[1]	=>  Location: PIN_64,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- B[1]	=>  Location: PIN_52,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- C[1]	=>  Location: PIN_39,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- A[2]	=>  Location: PIN_87,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- B[2]	=>  Location: PIN_8,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- C[2]	=>  Location: PIN_36,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- A[3]	=>  Location: PIN_43,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- B[3]	=>  Location: PIN_20,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
--- C[3]	=>  Location: PIN_38,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
+-- Y0	=>  Location: PIN_7,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
+-- Y1	=>  Location: PIN_21,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
+-- Y2	=>  Location: PIN_42,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
+-- Y3	=>  Location: PIN_12,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
+-- A	=>  Location: PIN_20,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
+-- B	=>  Location: PIN_14,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
 
 
-ARCHITECTURE structure OF csa_4bit IS
+ARCHITECTURE structure OF decoder_24 IS
 SIGNAL gnd : std_logic := '0';
 SIGNAL vcc : std_logic := '1';
 SIGNAL unknown : std_logic := 'X';
@@ -74,239 +61,67 @@ SIGNAL devpor : std_logic := '1';
 SIGNAL ww_devoe : std_logic;
 SIGNAL ww_devclrn : std_logic;
 SIGNAL ww_devpor : std_logic;
-SIGNAL ww_A : std_logic_vector(3 DOWNTO 0);
-SIGNAL ww_B : std_logic_vector(3 DOWNTO 0);
-SIGNAL ww_C : std_logic_vector(3 DOWNTO 0);
-SIGNAL ww_Sum : std_logic_vector(3 DOWNTO 0);
-SIGNAL ww_Carry : std_logic_vector(3 DOWNTO 0);
-SIGNAL \Sum~0_combout\ : std_logic;
-SIGNAL \Sum~1_combout\ : std_logic;
-SIGNAL \Sum~2_combout\ : std_logic;
-SIGNAL \Sum~3_combout\ : std_logic;
-SIGNAL \Carry~0_combout\ : std_logic;
-SIGNAL \Carry~1_combout\ : std_logic;
-SIGNAL \Carry~2_combout\ : std_logic;
-SIGNAL \C~combout\ : std_logic_vector(3 DOWNTO 0);
-SIGNAL \B~combout\ : std_logic_vector(3 DOWNTO 0);
-SIGNAL \A~combout\ : std_logic_vector(3 DOWNTO 0);
+SIGNAL ww_A : std_logic;
+SIGNAL ww_B : std_logic;
+SIGNAL ww_Y0 : std_logic;
+SIGNAL ww_Y1 : std_logic;
+SIGNAL ww_Y2 : std_logic;
+SIGNAL ww_Y3 : std_logic;
+SIGNAL \A~combout\ : std_logic;
+SIGNAL \B~combout\ : std_logic;
+SIGNAL \comb~0_combout\ : std_logic;
+SIGNAL \comb~1_combout\ : std_logic;
+SIGNAL \comb~2_combout\ : std_logic;
+SIGNAL \comb~3_combout\ : std_logic;
+SIGNAL \ALT_INV_comb~3_combout\ : std_logic;
+SIGNAL \ALT_INV_comb~2_combout\ : std_logic;
+SIGNAL \ALT_INV_comb~1_combout\ : std_logic;
 
 BEGIN
 
 ww_A <= A;
 ww_B <= B;
-ww_C <= C;
-Sum <= ww_Sum;
-Carry <= ww_Carry;
+Y0 <= ww_Y0;
+Y1 <= ww_Y1;
+Y2 <= ww_Y2;
+Y3 <= ww_Y3;
 ww_devoe <= devoe;
 ww_devclrn <= devclrn;
 ww_devpor <= devpor;
-
--- Location: PIN_16,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\B[0]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_B(0),
-	combout => \B~combout\(0));
-
--- Location: PIN_34,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\C[0]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_C(0),
-	combout => \C~combout\(0));
-
--- Location: PIN_28,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\A[0]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_A(0),
-	combout => \A~combout\(0));
-
--- Location: LC_X2_Y2_N2
-\Sum~0\ : maxii_lcell
--- Equation(s):
--- \Sum~0_combout\ = (\B~combout\(0) $ (\C~combout\(0) $ (\A~combout\(0))))
-
--- pragma translate_off
-GENERIC MAP (
-	lut_mask => "c33c",
-	operation_mode => "normal",
-	output_mode => "comb_only",
-	register_cascade_mode => "off",
-	sum_lutc_input => "datac",
-	synch_mode => "off")
--- pragma translate_on
-PORT MAP (
-	datab => \B~combout\(0),
-	datac => \C~combout\(0),
-	datad => \A~combout\(0),
-	devclrn => ww_devclrn,
-	devpor => ww_devpor,
-	combout => \Sum~0_combout\);
-
--- Location: PIN_39,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\C[1]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_C(1),
-	combout => \C~combout\(1));
-
--- Location: PIN_52,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\B[1]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_B(1),
-	combout => \B~combout\(1));
-
--- Location: PIN_64,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\A[1]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_A(1),
-	combout => \A~combout\(1));
-
--- Location: LC_X5_Y4_N0
-\Sum~1\ : maxii_lcell
--- Equation(s):
--- \Sum~1_combout\ = (\C~combout\(1) $ (\B~combout\(1) $ (\A~combout\(1))))
-
--- pragma translate_off
-GENERIC MAP (
-	lut_mask => "c33c",
-	operation_mode => "normal",
-	output_mode => "comb_only",
-	register_cascade_mode => "off",
-	sum_lutc_input => "datac",
-	synch_mode => "off")
--- pragma translate_on
-PORT MAP (
-	datab => \C~combout\(1),
-	datac => \B~combout\(1),
-	datad => \A~combout\(1),
-	devclrn => ww_devclrn,
-	devpor => ww_devpor,
-	combout => \Sum~1_combout\);
-
--- Location: PIN_36,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\C[2]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_C(2),
-	combout => \C~combout\(2));
-
--- Location: PIN_8,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\B[2]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_B(2),
-	combout => \B~combout\(2));
-
--- Location: PIN_87,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\A[2]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_A(2),
-	combout => \A~combout\(2));
-
--- Location: LC_X4_Y2_N4
-\Sum~2\ : maxii_lcell
--- Equation(s):
--- \Sum~2_combout\ = (\C~combout\(2) $ (\B~combout\(2) $ (\A~combout\(2))))
-
--- pragma translate_off
-GENERIC MAP (
-	lut_mask => "c33c",
-	operation_mode => "normal",
-	output_mode => "comb_only",
-	register_cascade_mode => "off",
-	sum_lutc_input => "datac",
-	synch_mode => "off")
--- pragma translate_on
-PORT MAP (
-	datab => \C~combout\(2),
-	datac => \B~combout\(2),
-	datad => \A~combout\(2),
-	devclrn => ww_devclrn,
-	devpor => ww_devpor,
-	combout => \Sum~2_combout\);
-
--- Location: PIN_43,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\A[3]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "input")
--- pragma translate_on
-PORT MAP (
-	oe => GND,
-	padio => ww_A(3),
-	combout => \A~combout\(3));
+\ALT_INV_comb~3_combout\ <= NOT \comb~3_combout\;
+\ALT_INV_comb~2_combout\ <= NOT \comb~2_combout\;
+\ALT_INV_comb~1_combout\ <= NOT \comb~1_combout\;
 
 -- Location: PIN_20,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\B[3]~I\ : maxii_io
+\A~I\ : maxii_io
 -- pragma translate_off
 GENERIC MAP (
 	operation_mode => "input")
 -- pragma translate_on
 PORT MAP (
 	oe => GND,
-	padio => ww_B(3),
-	combout => \B~combout\(3));
+	padio => ww_A,
+	combout => \A~combout\);
 
--- Location: PIN_38,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
-\C[3]~I\ : maxii_io
+-- Location: PIN_14,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: Default
+\B~I\ : maxii_io
 -- pragma translate_off
 GENERIC MAP (
 	operation_mode => "input")
 -- pragma translate_on
 PORT MAP (
 	oe => GND,
-	padio => ww_C(3),
-	combout => \C~combout\(3));
+	padio => ww_B,
+	combout => \B~combout\);
 
--- Location: LC_X4_Y1_N2
-\Sum~3\ : maxii_lcell
+-- Location: LC_X2_Y2_N5
+\comb~0\ : maxii_lcell
 -- Equation(s):
--- \Sum~3_combout\ = \A~combout\(3) $ (\B~combout\(3) $ ((\C~combout\(3))))
+-- \comb~0_combout\ = ((\A~combout\) # ((\B~combout\)))
 
 -- pragma translate_off
 GENERIC MAP (
-	lut_mask => "9696",
+	lut_mask => "ffcc",
 	operation_mode => "normal",
 	output_mode => "comb_only",
 	register_cascade_mode => "off",
@@ -314,21 +129,41 @@ GENERIC MAP (
 	synch_mode => "off")
 -- pragma translate_on
 PORT MAP (
-	dataa => \A~combout\(3),
-	datab => \B~combout\(3),
-	datac => \C~combout\(3),
+	datab => \A~combout\,
+	datad => \B~combout\,
 	devclrn => ww_devclrn,
 	devpor => ww_devpor,
-	combout => \Sum~3_combout\);
+	combout => \comb~0_combout\);
+
+-- Location: LC_X2_Y2_N6
+\comb~1\ : maxii_lcell
+-- Equation(s):
+-- \comb~1_combout\ = ((!\A~combout\ & ((\B~combout\))))
+
+-- pragma translate_off
+GENERIC MAP (
+	lut_mask => "3300",
+	operation_mode => "normal",
+	output_mode => "comb_only",
+	register_cascade_mode => "off",
+	sum_lutc_input => "datac",
+	synch_mode => "off")
+-- pragma translate_on
+PORT MAP (
+	datab => \A~combout\,
+	datad => \B~combout\,
+	devclrn => ww_devclrn,
+	devpor => ww_devpor,
+	combout => \comb~1_combout\);
 
 -- Location: LC_X2_Y2_N4
-\Carry~0\ : maxii_lcell
+\comb~2\ : maxii_lcell
 -- Equation(s):
--- \Carry~0_combout\ = ((\B~combout\(0) & ((\C~combout\(0)) # (\A~combout\(0)))) # (!\B~combout\(0) & (\C~combout\(0) & \A~combout\(0))))
+-- \comb~2_combout\ = ((\A~combout\ & ((!\B~combout\))))
 
 -- pragma translate_off
 GENERIC MAP (
-	lut_mask => "fcc0",
+	lut_mask => "00cc",
 	operation_mode => "normal",
 	output_mode => "comb_only",
 	register_cascade_mode => "off",
@@ -336,21 +171,20 @@ GENERIC MAP (
 	synch_mode => "off")
 -- pragma translate_on
 PORT MAP (
-	datab => \B~combout\(0),
-	datac => \C~combout\(0),
-	datad => \A~combout\(0),
+	datab => \A~combout\,
+	datad => \B~combout\,
 	devclrn => ww_devclrn,
 	devpor => ww_devpor,
-	combout => \Carry~0_combout\);
+	combout => \comb~2_combout\);
 
--- Location: LC_X5_Y4_N2
-\Carry~1\ : maxii_lcell
+-- Location: LC_X2_Y2_N2
+\comb~3\ : maxii_lcell
 -- Equation(s):
--- \Carry~1_combout\ = ((\C~combout\(1) & ((\B~combout\(1)) # (\A~combout\(1)))) # (!\C~combout\(1) & (\B~combout\(1) & \A~combout\(1))))
+-- \comb~3_combout\ = ((\A~combout\ & ((\B~combout\))))
 
 -- pragma translate_off
 GENERIC MAP (
-	lut_mask => "fcc0",
+	lut_mask => "cc00",
 	operation_mode => "normal",
 	output_mode => "comb_only",
 	register_cascade_mode => "off",
@@ -358,122 +192,55 @@ GENERIC MAP (
 	synch_mode => "off")
 -- pragma translate_on
 PORT MAP (
-	datab => \C~combout\(1),
-	datac => \B~combout\(1),
-	datad => \A~combout\(1),
+	datab => \A~combout\,
+	datad => \B~combout\,
 	devclrn => ww_devclrn,
 	devpor => ww_devpor,
-	combout => \Carry~1_combout\);
-
--- Location: LC_X4_Y2_N2
-\Carry~2\ : maxii_lcell
--- Equation(s):
--- \Carry~2_combout\ = ((\C~combout\(2) & ((\B~combout\(2)) # (\A~combout\(2)))) # (!\C~combout\(2) & (\B~combout\(2) & \A~combout\(2))))
-
--- pragma translate_off
-GENERIC MAP (
-	lut_mask => "fcc0",
-	operation_mode => "normal",
-	output_mode => "comb_only",
-	register_cascade_mode => "off",
-	sum_lutc_input => "datac",
-	synch_mode => "off")
--- pragma translate_on
-PORT MAP (
-	datab => \C~combout\(2),
-	datac => \B~combout\(2),
-	datad => \A~combout\(2),
-	devclrn => ww_devclrn,
-	devpor => ww_devpor,
-	combout => \Carry~2_combout\);
-
--- Location: PIN_6,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Sum[0]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "output")
--- pragma translate_on
-PORT MAP (
-	datain => \Sum~0_combout\,
-	oe => VCC,
-	padio => ww_Sum(0));
-
--- Location: PIN_88,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Sum[1]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "output")
--- pragma translate_on
-PORT MAP (
-	datain => \Sum~1_combout\,
-	oe => VCC,
-	padio => ww_Sum(1));
-
--- Location: PIN_97,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Sum[2]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "output")
--- pragma translate_on
-PORT MAP (
-	datain => \Sum~2_combout\,
-	oe => VCC,
-	padio => ww_Sum(2));
-
--- Location: PIN_48,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Sum[3]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "output")
--- pragma translate_on
-PORT MAP (
-	datain => \Sum~3_combout\,
-	oe => VCC,
-	padio => ww_Sum(3));
-
--- Location: PIN_85,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Carry[0]~I\ : maxii_io
--- pragma translate_off
-GENERIC MAP (
-	operation_mode => "output")
--- pragma translate_on
-PORT MAP (
-	datain => GND,
-	oe => VCC,
-	padio => ww_Carry(0));
+	combout => \comb~3_combout\);
 
 -- Location: PIN_7,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Carry[1]~I\ : maxii_io
+\Y0~I\ : maxii_io
 -- pragma translate_off
 GENERIC MAP (
 	operation_mode => "output")
 -- pragma translate_on
 PORT MAP (
-	datain => \Carry~0_combout\,
+	datain => \comb~0_combout\,
 	oe => VCC,
-	padio => ww_Carry(1));
+	padio => ww_Y0);
 
--- Location: PIN_2,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Carry[2]~I\ : maxii_io
+-- Location: PIN_21,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
+\Y1~I\ : maxii_io
 -- pragma translate_off
 GENERIC MAP (
 	operation_mode => "output")
 -- pragma translate_on
 PORT MAP (
-	datain => \Carry~1_combout\,
+	datain => \ALT_INV_comb~1_combout\,
 	oe => VCC,
-	padio => ww_Carry(2));
+	padio => ww_Y1);
 
--- Location: PIN_27,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
-\Carry[3]~I\ : maxii_io
+-- Location: PIN_42,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
+\Y2~I\ : maxii_io
 -- pragma translate_off
 GENERIC MAP (
 	operation_mode => "output")
 -- pragma translate_on
 PORT MAP (
-	datain => \Carry~2_combout\,
+	datain => \ALT_INV_comb~2_combout\,
 	oe => VCC,
-	padio => ww_Carry(3));
+	padio => ww_Y2);
+
+-- Location: PIN_12,	 I/O Standard: 3.3-V LVTTL,	 Current Strength: 16mA
+\Y3~I\ : maxii_io
+-- pragma translate_off
+GENERIC MAP (
+	operation_mode => "output")
+-- pragma translate_on
+PORT MAP (
+	datain => \ALT_INV_comb~3_combout\,
+	oe => VCC,
+	padio => ww_Y3);
 END structure;
 
 
